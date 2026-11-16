@@ -22,6 +22,36 @@ document.addEventListener("keydown", (event) => {
 
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
+const heroVideo = document.querySelector(".hero-video");
+
+if (heroVideo) {
+  const hero = heroVideo.closest(".hero");
+
+  function showHeroStill() {
+    hero.classList.remove("video-ready");
+  }
+
+  function updateHeroMotion() {
+    if (reducedMotion.matches) {
+      showHeroStill();
+      heroVideo.removeAttribute("src");
+      heroVideo.load();
+      return;
+    }
+    heroVideo.muted = true;
+    heroVideo.src = heroVideo.dataset.src;
+    heroVideo.play().catch(showHeroStill);
+  }
+
+  heroVideo.addEventListener("playing", () => {
+    if (reducedMotion.matches) return;
+    hero.classList.add("video-ready");
+  });
+  heroVideo.addEventListener("error", showHeroStill);
+  reducedMotion.addEventListener("change", updateHeroMotion);
+  updateHeroMotion();
+}
+
 if ("IntersectionObserver" in window && !reducedMotion.matches) {
   const revealObserver = new IntersectionObserver((entries, observer) => {
     for (const entry of entries) {
