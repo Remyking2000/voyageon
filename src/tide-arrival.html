@@ -1,0 +1,92 @@
+<style>
+  #tide-arrival {
+    position: fixed;
+    inset: 0;
+    z-index: 2147483646;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+    background: #173d44;
+    color: #f7ecd6;
+    pointer-events: none;
+    transition: opacity 400ms ease-out;
+  }
+  #tide-arrival[hidden] { display: none; }
+  #tide-arrival.leaving { opacity: 0; }
+  #tide-arrival .wordmark {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    font: 400 clamp(3.3rem, 7vw, 6rem)/1 Georgia, serif;
+    letter-spacing: -.055em;
+    animation: tide-word .8s ease-out both;
+  }
+  #tide-arrival .lion {
+    display: block;
+    width: clamp(64px, 8vw, 96px);
+    height: auto;
+    margin: 0 auto .22em;
+    filter: grayscale(1) contrast(2) invert(1);
+    mix-blend-mode: screen;
+  }
+  #tide-arrival .wordmark { mix-blend-mode: screen; }
+  #tide-arrival small {
+    display: block;
+    margin-top: 1em;
+    padding-left: .45em;
+    font: 500 .8rem/1.5 Arial, sans-serif;
+    letter-spacing: .45em;
+    text-transform: uppercase;
+  }
+  #tide-arrival .swell {
+    position: absolute;
+    inset: auto -16% -20%;
+    height: 49%;
+    background: #2c6769;
+    border-radius: 50% 55% 0 0;
+    rotate: -5deg;
+    animation: tide-swell 2s ease-in-out both;
+  }
+  #tide-arrival .near {
+    bottom: -29%;
+    background: #568c88;
+    rotate: 5deg;
+    animation-delay: .12s;
+  }
+  @keyframes tide-swell {
+    from { translate: -4% 18%; }
+    55% { translate: 3% -8%; }
+    to { translate: 0 0; }
+  }
+  @keyframes tide-word { from { opacity: 0; transform: translateY(5px); } }
+  @media (prefers-reduced-motion: reduce) {
+    #tide-arrival { display: none; }
+    #tide-arrival * { animation: none; }
+  }
+</style>
+<div id="tide-arrival" hidden aria-hidden="true">
+  <span class="swell"></span><span class="swell near"></span>
+  <div class="wordmark"><img class="lion" src="/assets/voyageon-logo.jpg" width="500" height="500" alt="">Voyageon<small>Tours</small></div>
+</div>
+<script>
+  (() => {
+    const overlay = document.getElementById("tide-arrival");
+    if (location.hash || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    try {
+      if (sessionStorage.getItem("voyageon-arrival")) return;
+      sessionStorage.setItem("voyageon-arrival", "seen");
+    } catch { /* Storage can be disabled in private browsing. */ }
+    overlay.hidden = false;
+    const started = performance.now();
+    function dismiss() {
+      overlay.classList.add("leaving");
+      setTimeout(() => overlay.remove(), 420);
+    }
+    const fallback = setTimeout(dismiss, 3000);
+    window.addEventListener("voyageon:ready", () => {
+      clearTimeout(fallback);
+      setTimeout(dismiss, Math.max(0, 1650 - (performance.now() - started)));
+    }, { once: true });
+    window.addEventListener("pagehide", () => overlay.remove(), { once: true });
+  })();
+</script>

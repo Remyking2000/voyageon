@@ -30,6 +30,9 @@ export async function loadPage(pagePath) {
 
 export default function App({ pagePath, Page, content }) {
   useEffect(startSiteEffects, []);
+  useEffect(() => {
+    window.dispatchEvent(new Event("voyageon:ready"));
+  }, []);
 
   return (
     <Layout pagePath={pagePath}>
