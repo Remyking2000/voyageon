@@ -53,7 +53,7 @@ export default function KenyanCulture() {
           <h3>Gedi and the Indian Ocean trade</h3>
           <p>In a coastal forest near Watamu, Gedi’s coral-stone ruins preserve the layout of a Swahili town. Mosques, courtyards and wells give a sense of how the settlement was built and how people lived.</p>
           <p>Archaeologists found goods from as far away as China, India and Venice at Gedi. Those finds show how a town set inland from the shore was connected to trade across the Indian Ocean.</p>
-          <a className="destination-link" href="/destinations/coast.html">Explore the Kenyan coast <span aria-hidden="true">↗</span></a>
+          <a className="destination-link" href="/destinations/watamu-malindi.html">Explore Watamu &amp; Malindi <span aria-hidden="true">↗</span></a>
           <a className="culture-source" href="https://whc.unesco.org/en/list/1720/">Gedi at UNESCO World Heritage</a>
         </div>
       </article>

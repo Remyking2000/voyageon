@@ -1,7 +1,22 @@
 import Photo from "./Photo.jsx";
-import { destinationGroups, destinationsPath } from "../destination-links.js";
+import { destinationGroups, destinations, destinationsPath } from "../destination-links.js";
 import { MombasaOldTownPhoto, MombasaOldTownCredit } from "./MombasaOldTownPhoto.jsx";
 import { TripIntro, TripGuide } from "./TripSections.jsx";
+
+function MoreDestinations({ title, slugs }) {
+  const places = destinations.filter(({ slug }) => slugs.includes(slug));
+
+  return (
+    <div className="more-destinations">
+      <h3>{title}</h3>
+      <ul className="collection-links">
+        {places.map(({ name, path }) => (
+          <li key={path}><a className="destination-link" href={path}>{name} <span aria-hidden="true">↗</span></a></li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
 export const collections = {
   destinations: {
@@ -12,25 +27,26 @@ export const collections = {
         eyebrow="Explore Kenya"
         photo="/assets/mara-storm.jpg"
         alt=""
-        description="Explore the Maasai Mara, watch elephants in Amboseli, or follow Kenya’s Indian Ocean coast from Mombasa to Kilifi."
+        description="Explore Kenya from the Indian Ocean to Lake Victoria, the central highlands and the far north. Tell us where you’d like to go and we’ll help plan the route."
       />
     ),
     guide: (
       <TripGuide titleId="collection-guide">
         <h2 id="collection-guide">Where to go in Kenya</h2>
-        <div className="collection-cards">
-          {destinationGroups.map(({ name, path, places }) => (
-            <article className="collection-card" key={path}>
+        <div className="collection-cards destination-directory">
+          {destinationGroups.map(({ id, name, path, places }) => (
+            <article className="collection-card" id={id} key={id}>
               <h3>{name}</h3>
               <ul className="collection-links">
                 {places.map(place => (
                   <li key={place.path}><a className="destination-link" href={place.path}>{place.name} <span aria-hidden="true">↗</span></a></li>
                 ))}
               </ul>
-              <a className="button button-primary" href={path}>Explore {name.toLowerCase()} <span aria-hidden="true">↗</span></a>
+              {path && <a className="button button-primary" href={path}>Explore {name.toLowerCase()} <span aria-hidden="true">↗</span></a>}
             </article>
           ))}
         </div>
+        <a className="button button-primary directory-contact" href="/contact.html">Plan a route with us <span aria-hidden="true">↗</span></a>
       </TripGuide>
     ),
   },
@@ -104,7 +120,7 @@ export const collections = {
             <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> · Cropped for display
           </small>
         }
-        description="Start with Mombasa’s Old Town and Fort Jesus, or spend a few quieter days around Kilifi Creek, Bofa Beach, and the Mnarani ruins."
+        description="Follow Kenya’s Indian Ocean coast from Diani and Mombasa through Kilifi, Watamu and Malindi to Lamu’s Swahili Old Town."
       />
     ),
     guide: (
@@ -125,6 +141,7 @@ export const collections = {
             <a className="destination-link" href="/destinations/kilifi.html">Explore Kilifi <span aria-hidden="true">↗</span></a>
           </article>
         </div>
+        <MoreDestinations title="More of the Kenyan coast" slugs={["diani", "watamu-malindi", "lamu"]} />
       </TripGuide>
     ),
     plan: (
@@ -189,7 +206,7 @@ export const collections = {
         eyebrow="Wildlife in Kenya"
         photo="/photos/maasai-mara1.jpg"
         alt="A lion standing in tall grass in the Maasai Mara"
-        description="Spend a morning on the plains outside Nairobi, look for elephants beneath Kilimanjaro, or build a longer trip around game drives in the Maasai Mara."
+        description="Start close to Nairobi or follow the wildlife farther afield, from the Maasai Mara and Amboseli to Tsavo, Lake Nakuru, Laikipia and Samburu."
       />
     ),
     guide: (
@@ -216,6 +233,7 @@ export const collections = {
             <a className="destination-link" href="/destinations/nairobi-national-park.html">Explore Nairobi National Park <span aria-hidden="true">↗</span></a>
           </article>
         </div>
+        <MoreDestinations title="More safari destinations" slugs={["tsavo", "nakuru", "nanyuki", "samburu"]} />
       </TripGuide>
     ),
     plan: (

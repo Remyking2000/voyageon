@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import Layout from "./Layout.jsx";
-import { destinationsPath } from "./destination-links.js";
+import { destinations, destinationsPath } from "./destination-links.js";
 import { startSiteEffects } from "./site-effects.js";
 
 const placeSlugs = new Set(["maasai-mara", "amboseli", "nairobi-national-park", "mombasa", "kilifi"]);
@@ -12,6 +12,10 @@ export async function loadPage(pagePath) {
   if (placeSlugs.has(slug)) {
     const { default: Page, places } = await import("./pages/DestinationPage.jsx");
     return { Page, content: places[slug] };
+  }
+  if (destinations.some(place => place.path === pagePath)) {
+    const { default: Page, guides } = await import("./pages/KenyaDestinationPage.jsx");
+    return { Page, content: guides[slug] };
   }
   if (collectionSlugs.has(slug)) {
     const { default: Page, collections } = await import("./pages/CollectionPage.jsx");

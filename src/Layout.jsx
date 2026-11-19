@@ -1,4 +1,4 @@
-import { destinationGroups, destinations, destinationsPath } from "./destination-links.js";
+import { destinationGroups, destinationsPath } from "./destination-links.js";
 
 const primaryLinks = [
   { name: "Safari", path: "/destinations/safari.html" },
@@ -26,8 +26,8 @@ function SiteHeader({ pagePath }) {
             <details className="destination-menu">
               <summary aria-label="Browse destinations"><span className="menu-chevron" aria-hidden="true"></span></summary>
               <div className="destination-options">
-                {destinationGroups.map(({ name, path, places }) => (
-                  <div className="destination-group" key={path}>
+                {destinationGroups.map(({ id, name, path = destinationsPath + "#" + id, places }) => (
+                  <div className="destination-group" key={id}>
                     <a className="destination-group-title" href={path} aria-current={pagePath === path ? "page" : undefined}>
                       {name} <span aria-hidden="true">↗</span>
                     </a>
@@ -71,7 +71,8 @@ function SiteFooter({ pagePath }) {
           </div>
           <nav className="footer-nav" aria-label="Footer destinations">
             <h2>Destinations</h2>
-            {destinations.map(({ path, name }) => <a key={path} href={path}>{name}</a>)}
+            <a href={destinationsPath}>All destinations</a>
+            {destinationGroups.map(({ id, name, path = destinationsPath + "#" + id }) => <a key={id} href={path}>{name}</a>)}
           </nav>
           <nav className="footer-nav" aria-label="About Voyageon Tours">
             <h2>Voyageon Tours</h2>
